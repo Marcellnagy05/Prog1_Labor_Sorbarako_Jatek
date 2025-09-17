@@ -128,7 +128,7 @@ int main()
         //! Chosing which elements to swap
         printf("1.st index to swap: ");
         scanf("%d", &swapIndexOne);
-        printf("\n2.nd index to swap: ");
+        printf("2.nd index to swap: ");
         scanf("%d", &swapIndexTwo);
 
         //! changing the indexing to the correct values
