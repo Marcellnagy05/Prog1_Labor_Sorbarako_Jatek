@@ -15,10 +15,18 @@ void shuffleArray(int arr[], int length)
     }
 }
 
+int compareArr(int arrA[], int arrB[], int length){
+    for (int i = 0; i < length; i++)
+    {
+        if(arrA[i] != arrB[i]) return 0;
+    }
+    return 1;
+}
+
 void printingTwoRows(char topRow[256], char bottomRow[256], int length, int nums[6])
 {
-    memset(topRow, '\0', sizeof(topRow));
-    memset(bottomRow, '\0', sizeof(bottomRow));
+    memset(topRow, '\0', 256);
+    memset(bottomRow, '\0', 256);
     for (int i = 0; i < length; i++)
     {
         //! Declaring a temporary buffer to store one element
@@ -34,6 +42,34 @@ void printingTwoRows(char topRow[256], char bottomRow[256], int length, int nums
         //! Copiing our temp to our bottomRow array
         strcat(bottomRow, tempBuff);
     }
+}
+
+int *sortArr(int arr[], int length)
+{
+    int *returned = malloc(length * sizeof(int));
+    if (!returned)
+        return NULL;
+    for (int i = 0; i < length; i++)
+    {
+        returned[i] = arr[i];
+    }   
+
+    for (int i = 0; i < length - 1; i++)
+    {
+        int minIdx = i;
+        for (int j = i + 1; j < length; j++)
+        {
+            if (returned[j] < returned[minIdx])
+            {
+                minIdx = j;
+            }
+        }
+
+        int temp = returned[i];
+        returned[i] = returned[minIdx];
+        returned[minIdx] = temp;
+    }
+    return returned;
 }
 
 int main()
@@ -52,6 +88,8 @@ int main()
         nums[i] = num;
     }
 
+    int *sortedNums = sortArr(nums, length);
+    
     //! Helper func Line[5-14], this shuffles the array
     shuffleArray(nums, length);
     while (1)
@@ -74,14 +112,18 @@ int main()
         swapIndexOne--;
         swapIndexTwo--;
 
-        char temp = nums[swapIndexOne];
+        int temp = nums[swapIndexOne];
         nums[swapIndexOne] = nums[swapIndexTwo];
         nums[swapIndexTwo] = temp;
 
         printingTwoRows(topRow, bottomRow, length, nums);
 
-        printf("%s\n%-6s\n", topRow, bottomRow);
+        if(compareArr(sortedNums,nums,length)){
+            printf("%s\n%-6s\n", topRow, bottomRow);
+            printf("Congratulations you won!");
+            break;
+        }
     }
-
+    free(sortedNums);
     return 0;
 }
